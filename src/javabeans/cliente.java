@@ -13,65 +13,65 @@ import java.util.Scanner;
 
 public class cliente {
 
-		public static String servidor_ip = "localhost";
-		public static int servidor_puerto = 1337;
-		public static int opcion;
+	public static String servidor_ip = "localhost";
+	public static int servidor_puerto = 1337;
+	
+	public static List<String> datos = new ArrayList();
+
+	public static void main(String[] args) {
 		
-		public static void main(String[] args) {
-			
-		System.out.println("<------ APLICACION CLIENTE ------>");
+		String opcion = "-1";
+		System.out.println("[APLICACION CLIENTE]");
 		InetSocketAddress servidor = new InetSocketAddress(servidor_ip, servidor_puerto);
-		while (opcion!=3) {
-		try {
+
+		do {
+			try (Socket socketAlServidor = new Socket()) {
+				datos.removeAll(datos);
+				System.out.println("[ESTABLECIENDO CONEXION]");
+				socketAlServidor.connect(servidor);
+				System.out.println("[CONECTADO][" + servidor_ip + "][PUERTO][" + servidor_puerto + "]");
+				PrintStream datos_salida = new PrintStream(socketAlServidor.getOutputStream());
+
 				Scanner sc = new Scanner(System.in);
-				System.out.println("<------ 1 > Consulta isbn ------->");
-				System.out.println("<------ 2 > Consulta titulo------>");
-				System.out.println("<------ 3 > Salir --------------->");
-				System.out.println("<-------------------------------->");
-						
-				System.out.println("CLIENTE: Seleccione opcion");
-				String opcion = sc.nextLine();
+				System.out.println(" 1 > Consulta isbn ");
+				System.out.println(" 2 > Consulta titulo");
+				System.out.println(" 3 > Salir ");
+
+				System.out.println("Seleccione opcion");
+				opcion = sc.nextLine();
+				datos.add(opcion);
 				switch (opcion) {
-				
+
 				case "1":
-					//System.out.println("INTRODUZCA ISBN:");
-					//String isbnQuery = sc.nextLine();
+					System.out.println("INTRODUZCA ISBN:");
+					datos.add(sc.nextLine());
+
 					break;
 				case "2":
-					//System.out.println("INTRODUZCA TITULO:");
-					//String tituloQuery = sc.nextLine();
+					System.out.println("INTRODUZCA TITULO:");
+					datos.add(sc.nextLine());
 					break;
-				case "3":
-					break;
-
 				}
-				
-				Socket socketAlServidor = new Socket();
-				System.out.println("<------ ESTABLECIENDO CONEXION ------>");
-				socketAlServidor.connect(servidor);			
-				System.out.println("<------ CONECTADO ------[" + servidor_ip 
-						+ "] PUERTO [" + servidor_puerto + "]");
-				
-				PrintStream datos_salida = new PrintStream(socketAlServidor.getOutputStream());
-				datos_salida.println(opcion);
-				
-				InputStreamReader datos_entrada = new InputStreamReader(socketAlServidor.getInputStream());
-				BufferedReader bf = new BufferedReader(datos_entrada);
-				System.out.println("<------ ESPERANDO RESPUESTA ------>");
-				String resultado = bf.readLine();
-				System.out.println(resultado);
-				
-		} catch (UnknownHostException e) {
-			System.err.println("<------ NO HAY RESPUESTA DE LA DIRECCION ------>" + servidor_ip);
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("<------ ERROR I/O ------>");
-			e.printStackTrace();
-		} catch (Exception e) {
-			System.err.println("<------ ERROR INDETERMINADO ------>" + e);
-			e.printStackTrace();
-		}
-		}
-	System.out.println("<------ CERRANDO CONEXION ------>");
-}
+				if (opcion.compareTo("3") != 0) {
+					datos_salida.println(String.join(";", datos));
+					InputStreamReader datos_entrada = new InputStreamReader(socketAlServidor.getInputStream());
+					BufferedReader bf = new BufferedReader(datos_entrada);
+					System.out.println("[ESPERANDO RESPUESTA]");
+					String resultado = bf.readLine();
+					System.out.println(resultado);
+				}
+
+			} catch (UnknownHostException e) {
+				System.err.println("[NO HAY RESPUESTA DE LA DIRECCION]" + servidor_ip);
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println("[ERROR I/O]");
+				e.printStackTrace();
+			} catch (Exception e) {
+				System.err.println("[ERROR INDETERMINADO]" + e);
+				e.printStackTrace();
+			}
+		} while (opcion.compareTo("3") != 0);
+		System.out.println("[CERRANDO CONEXION]");
+	}
 }
