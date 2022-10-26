@@ -6,6 +6,16 @@ public class libro {
 	private String autor;
 	private double precio;
 	
+	public libro(String titulo, String autor, String isbn, double precio) {
+	
+		super();
+		this.titulo = titulo;
+		this.autor = autor;
+		this.ISBN = isbn;
+		this.precio = precio;
+		
+	}
+		
 	public String getISBN() {
 		return ISBN;
 	}

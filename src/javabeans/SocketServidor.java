@@ -21,12 +21,12 @@ public class SocketServidor {
 		System.out.println("----------------------------------");
 		System.out.println("<------ CARGANDO LIBROS ------>");
 		System.out.println("----------------------------------");
-		Libro libro1 = new Libro("SPQR","Mary Bear","9788417067489",32);
-		Libro libro2 = new Libro("LOS OTROS VUELOS A LA LUNA","Rafael Clemente","9788448028312",(float) 19.5);
-		Libro libro3 = new Libro("EL ARTE DE LA FELICIDAD","Dalai Lama","9788497595957",(float)12.5);
-		Libro libro4 = new Libro("LA VIDA ES SUEÑO","Pedro Calderon de la Barca","9788470397004",32);
-		Libro libro5 = new Libro("VIAJE AL CENTRO DE LA TIERRA","Julio Verne","9788547858654",(float) 10.5);
-		List<Libro> listaLibros = new ArrayList<>();
+		libro libro1 = new libro("SPQR","Mary Bear","9788417067489",32);
+		libro libro2 = new libro("LOS OTROS VUELOS A LA LUNA","Rafael Clemente","9788448028312",(float) 19.5);
+		libro libro3 = new libro("EL ARTE DE LA FELICIDAD","Dalai Lama","9788497595957",(float)12.5);
+		libro libro4 = new libro("LA VIDA ES SUEÑO","Pedro Calderon de la Barca","9788470397004",32);
+		libro libro5 = new libro("VIAJE AL CENTRO DE LA TIERRA","Julio Verne","9788547858654",(float) 10.5);
+		List<libro> listaLibros = new ArrayList<>();
 		listaLibros.add(libro1);
 		listaLibros.add(libro2);
 		listaLibros.add(libro3);
@@ -44,19 +44,19 @@ public class SocketServidor {
 			
 			while(true){		
 				
-				System.out.println("<------ ESCUCHANDO PUERTO ------>" + servidor_puerto);
+				System.out.println("[ESCUCHANDO PUERTO]" + servidor_puerto);
 				
 
 				socketAlCliente = serverSocket.accept();
-				System.out.println("<------ PETICION RECIBIDA ------>");
+				System.out.println("[PETICION RECIBIDA]");
 				
 				datos_entrada = new InputStreamReader(socketAlCliente.getInputStream());
 				BufferedReader bf = new BufferedReader(datos_entrada);
 								
 				
 				String opcionRecibida = bf.readLine();
-				System.out.println("<------ DATOS RECIBIDOS ------>" + opcionRecibida);
-				System.out.println("<------"+ opcionRecibida + "------>");
+				System.out.println("[DATOS RECIBIDOS]" + opcionRecibida);
+				System.out.println("["+ opcionRecibida + "]");
 							
 				
 				datos_salida = new PrintStream(socketAlCliente.getOutputStream());
@@ -71,10 +71,10 @@ public class SocketServidor {
 		}		
 				
 		} catch (IOException e) {
-			System.err.println("<------ ERROR I/O ------>");
+			System.err.println("[ERROR I/O]");
 			e.printStackTrace();
 		} catch (Exception e) {
-			System.err.println("<------ ERROR INDETERMINADO ------>" + e);
+			System.err.println("[ERROR INDETERMINADO]" + e);
 			e.printStackTrace();
 		}
 	}
