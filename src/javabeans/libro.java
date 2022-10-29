@@ -40,10 +40,11 @@ public class libro {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Libro Solicitado [ISBN=" + ISBN + ", titulo=" + titulo + ", autor=" + autor + ", precio=" + precio + "]";
+		return "libro [ISBN=" + ISBN + ", titulo=" + titulo + ", autor=" + autor + ", precio=" + precio + "]";
 	}
+	
 	
 }

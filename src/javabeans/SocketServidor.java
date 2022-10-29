@@ -15,18 +15,17 @@ import java.util.Scanner;
 public class SocketServidor {
 
 	public static int servidor_puerto = 1337;
+	public static String libreria = null;
+	public static String[] datosbulk = null;
 	
 	public static void main(String[] args) throws InterruptedException {
-		
 		System.out.println("[APLICACION SERVIDOR]");
 		System.out.println("[CARGANDO LIBROS]");
-		String [] datosbulk;
-		String libreria = null;
-		libro libro1 = new libro("SPQR","Mary Bear","12",32);
-		libro libro2 = new libro("LOS OTROS VUELOS A LA LUNA","Rafael Clemente","23",19.5);
-		libro libro3 = new libro("EL ARTE DE LA FELICIDAD","Dalai Lama","34",12.5);
-		libro libro4 = new libro("LA VIDA ES SUEÑO","Pedro Calderon de la Barca","56",32);
-		libro libro5 = new libro("VIAJE AL CENTRO DE LA TIERRA","Julio Verne","78",10.5);
+		libro libro1 = new libro("SPQR","MARY BEAR","12",32);
+		libro libro2 = new libro("LOS OTROS VUELOS A LA LUNA","RAFAEL CLEMENTE","23",19.5);
+		libro libro3 = new libro("EL ARTE DE LA FELICIDAD","DALAI LAMA","34",12.5);
+		libro libro4 = new libro("20000 LEGUAS DE VIAJE SUBMARINO","JULIO VERNE","56",32);
+		libro libro5 = new libro("VIAJE AL CENTRO DE LA TIERRA","JULIO VERNE","78",10.5);
 		biblioteca l1 = new biblioteca(libreria);
 		l1.addLibro(libro1);
 		l1.addLibro(libro2);
@@ -41,32 +40,27 @@ public class SocketServidor {
 		try (ServerSocket serverSocket = new ServerSocket()){			
 			
 			serverSocket.bind(direccion);
-			
+		
 			while(true){		
 				
 				System.out.println("[ESCUCHANDO PUERTO]" + servidor_puerto);
-				
 				socketAlCliente = serverSocket.accept();
 				System.out.println("[PETICION RECIBIDA]");
-				
 				datos_entrada = new InputStreamReader(socketAlCliente.getInputStream());
 				BufferedReader bf = new BufferedReader(datos_entrada);			
 				String datos_recibidos = bf.readLine();
 				if (datos_recibidos == null || datos_recibidos.length() == 0) {
 					System.out.println("Buffer vacio");
 					continue;
-				}
-				datosbulk = datos_recibidos.split(";");   
-				
-				
-				
+				} 
+				datosbulk = datos_recibidos.split(";");
+				System.out.println(datos_recibidos);
 				System.out.println("[DATOS RECIBIDOS]");
 				System.out.println("[==============================]");
 				System.out.println("[ OPCION : " + datosbulk[0] + "]");
 				System.out.println("[ DATOS  : " + datosbulk[1] + "]");
 				System.out.println("[==============================]");
 				datos_salida = new PrintStream(socketAlCliente.getOutputStream());
-				System.out.println(datos_salida);
 				
 				switch (datosbulk[0]) {
 				
@@ -77,6 +71,7 @@ public class SocketServidor {
 					datos_salida.print(l1.getLibroTitulo(datosbulk[1]).toString());
 					break;
 				case "3":
+					datos_salida.print(l1.getLibrosAutor(datosbulk[1]));
 					break;
 
 				}

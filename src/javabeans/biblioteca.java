@@ -1,20 +1,20 @@
 package javabeans;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-//Ejemplo de uso ArrayList aprenderaprogramar.com
-
-import java.util.ArrayList; //Los import deben ir siempre al principio antes de declarar la clase
+import java.util.ArrayList; 
 
 public class biblioteca {
 
 	private libro libro;
 	private String nombrelista;
 	private ArrayList<libro> listalibros;
+	private ArrayList<String> librosporautor;
 
 	public biblioteca(String nombre) {
 
@@ -73,6 +73,17 @@ public class biblioteca {
 		}
 
 		return null;
+	}
+	
+	public ArrayList<String> getLibrosAutor(String autor) {
+		
+		librosporautor = new ArrayList<>();
+		for (libro libro : listalibros) {
+			if (libro.getAutor().contains(autor)) {
+				librosporautor.add(libro.toString());
+			}
+		}
+		return librosporautor;
 	}
 
 }
